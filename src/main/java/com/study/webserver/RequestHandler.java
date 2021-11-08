@@ -5,23 +5,21 @@ import java.net.Socket;
 import java.util.logging.Logger;
 
 
-public class RequestHandler implements Runnable, UtilsWebServer
+public class RequestHandler implements UtilsWebServer
 {
 	private final Logger log = Logger.getLogger(RequestHandler.class.getName());
 	private final Socket clientSocket;
 	private final ResourceReader resourceReader;
-	private final RequestParser requestParser;
-	private  final ResponseWriter responseWriter;
+	private final ResponseWriter responseWriter;
 
 	public RequestHandler(Socket socket, String webAppPath)
 	{
 		this.clientSocket = socket;
 		this.responseWriter = new ResponseWriter();
 		this.resourceReader = new ResourceReader(webAppPath);
-		this.requestParser = new RequestParser();
 	}
 
-	public void run()
+	public void handle()
 	{
 		log.info(REQUEST_HANDLER_RAN);
 
@@ -30,34 +28,46 @@ public class RequestHandler implements Runnable, UtilsWebServer
 				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
 		)
 		{
-			log.info(in.toString());
-			Request request;
-			String line = "";
-			try
-			{
-				while ((line = in.readLine()) != null)
-				{
-					request = new Request();
-					log.info(line);
-				}
-			}
-			catch (Exception e){
-				e.printStackTrace();
-			}
-			request = requestParser.parse(in);
-			log.info(request.getUrl());
-/*			log.info(request.toString());
-			String contentRead = resourceReader.contentRead(request.getUrl());
-			log.info(request.toString());
-			responseWriter.writeResponse(out, contentRead);
-			log.info(request.toString());*/
-
+			Request request = parse(in);
+			log.info("before parse ------>");
+			String content = resourceReader.contentRead(request.getUrl());
+			log.info("content:" + content);
+			responseWriter.writeResponse(out, content);
 		}
 		catch (IOException e)
 		{
 			log.info(ERROR_CLIENT_SOCKET_START + e.getMessage());
 		}
 
+	}
+
+	private Request parse(BufferedReader in)
+	{
+		Request request = new Request();
+		String line = "";
+		try
+		{
+			while ((line = in.readLine()) != null)
+			{
+				if (line.contains(RequestType.GET.get()))
+				{
+					String[] lines = line.split(SPLIT_BRAKSPACE);
+					if (lines.length > 1)
+					{
+						request.setUrl(lines[1]);
+					}
+					log.info(request.getUrl());
+					break;
+				}
+			}
+
+
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+		return request;
 	}
 
 }

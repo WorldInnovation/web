@@ -1,12 +1,8 @@
 package com.study.webserver;
 
-import com.study.socket.thread.ClientHandler;
-
-import java.io.*;
+import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
 
@@ -51,15 +47,14 @@ public class Server implements UtilsWebServer
 		try (ServerSocket serverSocket = new ServerSocket(SOCKET_PORT))
 		{
 			log.info(TWELVE_STARS + SERVER_START_ON_HOST + SOCKET_PORT + TWELVE_STARS);
-			ExecutorService pool = Executors.newFixedThreadPool(3);
 			while (true)
 			{
 				Socket socket = serverSocket.accept();
 				{
 					log.info(SERVER_GOT_CONNECTION + socket.getInetAddress().getHostAddress());
 
-					RequestHandler clientSocket = new RequestHandler(socket, webAppPath);
-					pool.execute(clientSocket);
+					RequestHandler requestHandler = new RequestHandler(socket, webAppPath);
+					requestHandler.handle();
 
 					log.info(SERVER_GOT_CONNECTION + socket.getInetAddress().getCanonicalHostName());
 				}

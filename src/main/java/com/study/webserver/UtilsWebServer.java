@@ -8,9 +8,8 @@ public interface UtilsWebServer
 	String TWELVE_STARS = " ************ ";
 	String SERVER_START_ON_HOST = "Server start on localhost:";
 	String SERVER_GOT_CONNECTION = "Server have got connection:";
-	String REQUEST_HANDLER_GOT_MESSAGE = "Request handler got message:";
 	String REQUEST_HANDLER_RAN = "Request handler run:";
-	String WEB_APP_PATH = "src/main/resources/webapp";
+	String WEB_APP_PATH = "src/main/java/resources";
 	String RESOURCE_CAN_NOT_READ = "Resource can not read from:";
 	String FILE_NOT_FOUND = "File not found";
 	String SPLIT_BRAKSPACE = " ";
