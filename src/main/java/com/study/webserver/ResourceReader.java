@@ -3,6 +3,8 @@ package com.study.webserver;
 import jdk.jshell.execution.Util;
 
 import java.io.*;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -17,10 +19,11 @@ public class ResourceReader implements UtilsWebServer
 		this.resource = resource;
 	}
 
-	public String contentRead(String requestUri)
+	public Map<Integer, String> contentRead(String requestUri)
 	{
 		String line = "";
 		StringBuilder stringBuilder = new StringBuilder();
+		Map<Integer, String> contentStatusMap = new HashMap<>();
 		File resourceFile = new File(resource + requestUri);
 
 		if (resourceFile.exists())
@@ -34,16 +37,21 @@ public class ResourceReader implements UtilsWebServer
 				{
 					stringBuilder.append(line);
 				}
+				contentStatusMap.put(200, stringBuilder.toString());
 			}
 			catch (IOException e)
 			{
 				log.warning(RESOURCE_CAN_NOT_READ + requestUri);
+				stringBuilder.append(SERVER_ERROR_SEND_RESPONSE + requestUri);
+				contentStatusMap.put(500, stringBuilder.toString());
 			}
 		}
 		else
 		{
 			log.warning(FILE_NOT_FOUND);
+			stringBuilder.append(FILE_NOT_FOUND + requestUri);
+			contentStatusMap.put(404, stringBuilder.toString());
 		}
-		return stringBuilder.toString();
+		return contentStatusMap;
 	}
 }

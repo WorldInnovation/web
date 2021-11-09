@@ -11,8 +11,9 @@ public interface UtilsWebServer
 	String REQUEST_HANDLER_RAN = "Request handler run:";
 	String WEB_APP_PATH = "src/main/java/resources";
 	String RESOURCE_CAN_NOT_READ = "Resource can not read from:";
-	String FILE_NOT_FOUND = "File not found";
+	String FILE_NOT_FOUND = "File not found:";
 	String SPLIT_BRAKSPACE = " ";
+	String SERVER_ERROR_SEND_RESPONSE = "Error server send response:";
 
 	int SOCKET_PORT = 3000;
 

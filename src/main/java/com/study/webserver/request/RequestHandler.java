@@ -6,6 +6,7 @@ import com.study.webserver.UtilsWebServer;
 
 import java.io.*;
 import java.net.Socket;
+import java.util.Map;
 import java.util.logging.Logger;
 
 
@@ -35,7 +36,7 @@ public class RequestHandler implements UtilsWebServer
 			RequestParser requestParser = new RequestParser();
 			Request request = requestParser.parse(in);
 			log.info("before parse ------>");
-			String content = resourceReader.contentRead(request.getUrl());
+			Map<Integer, String> content = resourceReader.contentRead(request.getUrl());
 			log.info("content:" + content);
 			responseWriter.writeResponse(out, content);
 		}
