@@ -1,4 +1,8 @@
-package com.study.webserver;
+package com.study.webserver.request;
+
+import com.study.webserver.ResourceReader;
+import com.study.webserver.ResponseWriter;
+import com.study.webserver.UtilsWebServer;
 
 import java.io.*;
 import java.net.Socket;
@@ -28,7 +32,8 @@ public class RequestHandler implements UtilsWebServer
 				BufferedWriter out = new BufferedWriter(new OutputStreamWriter(clientSocket.getOutputStream()))
 		)
 		{
-			Request request = parse(in);
+			RequestParser requestParser = new RequestParser();
+			Request request = requestParser.parse(in);
 			log.info("before parse ------>");
 			String content = resourceReader.contentRead(request.getUrl());
 			log.info("content:" + content);
@@ -41,33 +46,5 @@ public class RequestHandler implements UtilsWebServer
 
 	}
 
-	private Request parse(BufferedReader in)
-	{
-		Request request = new Request();
-		String line = "";
-		try
-		{
-			while ((line = in.readLine()) != null)
-			{
-				if (line.contains(RequestType.GET.get()))
-				{
-					String[] lines = line.split(SPLIT_BRAKSPACE);
-					if (lines.length > 1)
-					{
-						request.setUrl(lines[1]);
-					}
-					log.info(request.getUrl());
-					break;
-				}
-			}
-
-
-		}
-		catch (IOException e)
-		{
-			e.printStackTrace();
-		}
-		return request;
-	}
 
 }

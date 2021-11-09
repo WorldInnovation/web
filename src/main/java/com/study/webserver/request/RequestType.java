@@ -1,4 +1,4 @@
-package com.study.webserver;
+package com.study.webserver.request;
 
 import java.util.function.Supplier;
 
