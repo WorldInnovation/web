@@ -1,4 +1,4 @@
-package com.study.socket.readWriter;
+package com.study.socket.readwriter;
 
 import java.io.*;
 import java.net.ServerSocket;

@@ -1,17 +1,15 @@
 package com.study.webserver;
 
-import jdk.jshell.execution.Util;
-
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class ResourceReader implements UtilsWebServer
+public class ResourceReader
 {
 	private static final Logger log = Logger.getLogger(ResourceReader.class.getName());
-	private static String resource;
+	private String resource;
 
 
 	public ResourceReader(String resource)
@@ -28,7 +26,6 @@ public class ResourceReader implements UtilsWebServer
 
 		if (resourceFile.exists())
 		{
-
 			try (FileInputStream fileInputStream = new FileInputStream(resourceFile);
 				  BufferedReader in = new BufferedReader(new InputStreamReader(fileInputStream))
 			)
@@ -41,15 +38,15 @@ public class ResourceReader implements UtilsWebServer
 			}
 			catch (IOException e)
 			{
-				log.warning(RESOURCE_CAN_NOT_READ + requestUri);
-				stringBuilder.append(SERVER_ERROR_SEND_RESPONSE + requestUri);
+				log.warning(WebServerConstants.RESOURCE_CAN_NOT_READ + requestUri);
+				stringBuilder.append(WebServerConstants.SERVER_ERROR_SEND_RESPONSE + requestUri);
 				contentStatusMap.put(500, stringBuilder.toString());
 			}
 		}
 		else
 		{
-			log.warning(FILE_NOT_FOUND);
-			stringBuilder.append(FILE_NOT_FOUND + requestUri);
+			log.warning(WebServerConstants.FILE_NOT_FOUND);
+			stringBuilder.append(WebServerConstants.FILE_NOT_FOUND + requestUri);
 			contentStatusMap.put(404, stringBuilder.toString());
 		}
 		return contentStatusMap;

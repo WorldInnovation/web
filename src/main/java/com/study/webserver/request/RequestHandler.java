@@ -2,7 +2,7 @@ package com.study.webserver.request;
 
 import com.study.webserver.ResourceReader;
 import com.study.webserver.ResponseWriter;
-import com.study.webserver.UtilsWebServer;
+import com.study.webserver.WebServerConstants;
 
 import java.io.*;
 import java.net.Socket;
@@ -10,7 +10,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 
-public class RequestHandler implements UtilsWebServer
+public class RequestHandler
 {
 	private final Logger log = Logger.getLogger(RequestHandler.class.getName());
 	private final Socket clientSocket;
@@ -26,7 +26,7 @@ public class RequestHandler implements UtilsWebServer
 
 	public void handle()
 	{
-		log.info(REQUEST_HANDLER_RAN);
+		log.info(WebServerConstants.REQUEST_HANDLER_RUN);
 
 		try (
 				BufferedReader in = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
@@ -42,7 +42,7 @@ public class RequestHandler implements UtilsWebServer
 		}
 		catch (IOException e)
 		{
-			log.info(ERROR_CLIENT_SOCKET_START + e.getMessage());
+			log.info(WebServerConstants.ERROR_CLIENT_SOCKET_START + e.getMessage());
 		}
 
 	}

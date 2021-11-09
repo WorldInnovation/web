@@ -1,16 +1,17 @@
 package com.study.webserver;
 
 import com.study.webserver.request.RequestHandler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.logging.Logger;
 
 
-public class Server implements UtilsWebServer
+public class Server
 {
-	private final Logger log = Logger.getLogger(Server.class.getName());
+	//public final Logger log = LoggerFactory.getLogger(getClass().getName());
 	private int port;
 	private String webAppPath;
 
@@ -22,6 +23,30 @@ public class Server implements UtilsWebServer
 
 	public Server()
 	{
+	}
+
+
+	public void start()
+	{
+		try (ServerSocket serverSocket = new ServerSocket(port))
+		{
+		//	log.info(WebServerConstants.TWELVE_STARS + WebServerConstants.SERVER_START_ON_HOST + port + WebServerConstants.TWELVE_STARS);
+			while (true)
+			{
+				Socket socket = serverSocket.accept();
+				//	log.info(WebServerConstants.SERVER_GOT_CONNECTION + socket.getInetAddress().getHostAddress());
+
+					RequestHandler requestHandler = new RequestHandler(socket, webAppPath);
+					requestHandler.handle();
+
+				//	log.info(WebServerConstants.SERVER_GOT_CONNECTION + socket.getInetAddress().getCanonicalHostName());
+			}
+		}
+		catch (IOException e)
+		{
+			//log.info(WebServerConstants.UNKNOWN_HOST_ERROR, e);
+		}
+
 	}
 
 	public int getPort()
@@ -43,32 +68,6 @@ public class Server implements UtilsWebServer
 	{
 		this.webAppPath = webAppPath;
 	}
-
-	public void start()
-	{
-		try (ServerSocket serverSocket = new ServerSocket(SOCKET_PORT))
-		{
-			log.info(TWELVE_STARS + SERVER_START_ON_HOST + SOCKET_PORT + TWELVE_STARS);
-			while (true)
-			{
-				Socket socket = serverSocket.accept();
-				{
-					log.info(SERVER_GOT_CONNECTION + socket.getInetAddress().getHostAddress());
-
-					RequestHandler requestHandler = new RequestHandler(socket, webAppPath);
-					requestHandler.handle();
-
-					log.info(SERVER_GOT_CONNECTION + socket.getInetAddress().getCanonicalHostName());
-				}
-			}
-		}
-		catch (IOException e)
-		{
-			log.info(UNKNOWN_HOST_ERROR + e.getMessage());
-		}
-
-	}
-
 
 }
 

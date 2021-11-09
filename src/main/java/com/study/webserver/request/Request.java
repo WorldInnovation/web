@@ -7,7 +7,7 @@ public class Request
 {
 	private String url;
 	private Map<String, String> headers;
-	private RequestType requestType;
+	private HttpMethod requestType;
 
 	public String getUrl()
 	{
@@ -29,12 +29,12 @@ public class Request
 		this.headers = headers;
 	}
 
-	public RequestType getRequestType()
+	public HttpMethod getRequestType()
 	{
 		return requestType;
 	}
 
-	public void setRequestType(RequestType requestType)
+	public void setRequestType(HttpMethod requestType)
 	{
 		this.requestType = requestType;
 	}
